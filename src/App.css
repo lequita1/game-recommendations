@@ -1,24 +1,25 @@
+
 .app-container {
   background-color: #121212;
   min-height: 100vh;
-  color: #fff;
+  color: #ffffff;
 }
 
 .app-main {
-  padding: 30px 40px;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 30px 20px;
 }
 
 .app-title {
-  margin-bottom: 20px;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  margin-bottom: 24px;
   border-left: 4px solid #f5c518;
-  padding-left: 10px;
+  padding-left: 12px;
 }
 
 .game-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 24px;
 }
