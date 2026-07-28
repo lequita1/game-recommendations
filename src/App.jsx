@@ -1,9 +1,9 @@
-// src/App.jsx
+
 import { useState } from 'react';
 import Header from './components/Header';
 import GameCards from './components/GameCards';
+import './App.css';
 
-// Temporary test data
 const DUMMY_GAMES = [
   {
     id: 1,
@@ -32,20 +32,15 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <div style={{ backgroundColor: '#121212', minHeight: '100vh', color: '#fff' }}>
+    <div className="app-container">
       <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-      <main style={{ padding: '30px 40px', maxWidth: '1200px', margin: '0 auto' }}>
-        <h2 style={{ marginBottom: '20px', fontSize: '1.5rem', borderLeft: '4px solid #f5c518', paddingLeft: '10px' }}>
+      <main className="app-main">
+        <h2 className="app-title">
           Popular Games
         </h2>
 
-        {/* Responsive Grid Layout */}
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', 
-          gap: '24px' 
-        }}>
+        <div className="game-grid">
           {DUMMY_GAMES.map((game) => (
             <GameCards key={game.id} game={game} />
           ))}
