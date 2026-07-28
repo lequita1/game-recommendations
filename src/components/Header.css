@@ -1,0 +1,35 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  background-color: #191919;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.logo {
+  background-color: #f5c518; /* IMDb Gold */
+  color: #000000;
+  font-weight: 900;
+  font-size: 1.2rem;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.search-input {
+  width: 40%;
+  padding: 10px 16px;
+  border-radius: 4px;
+  border: 1px solid #333;
+  background-color: #121212;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #f5c518;
+}
