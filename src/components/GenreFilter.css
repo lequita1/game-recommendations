@@ -1,0 +1,29 @@
+.genre-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.genre-btn {
+  background-color: #1e1e1e;
+  color: #aaaaaa;
+  border: 1px solid #333333;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.genre-btn:hover {
+  border-color: #f5c518;
+  color: #ffffff;
+}
+
+.genre-btn.active {
+  background-color: #f5c518;
+  color: #000000;
+  border-color: #f5c518;
+}
