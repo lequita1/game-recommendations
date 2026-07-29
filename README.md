@@ -7,3 +7,10 @@
 * ** Desktop-Optimized & Mobile Responsive:** Expands across wide screens (`1400px`) with a pinned sticky metadata sidebar, and automatically collapses into a single column on mobile.
 * ** Live Data Integration:** Real-time data from RAWG API including Metacritic scores, platforms, genres, developers, and screenshot galleries.
 * ** Error Handling & Loading States:** Built-in loading indicators and graceful fallbacks for missing media or API errors.
+
+### Prerequisites
+
+Ensure you have the following installed on your system:
+* [Node.js](https://nodejs.org/) (v18.0.0 or higher)
+* `npm` or `pnpm` / `yarn`
+* A free **RAWG API Key** from [RAWG.io API](https://rawg.io/apidocs)
