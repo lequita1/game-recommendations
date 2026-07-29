@@ -3,7 +3,7 @@ import "./Header.css";
 export default function Header({ searchQuery, setSearchQuery }) {
   return (
     <header className="header">
-      <div className="logo">GAME-Db</div>
+      <div className="logo">Game Vault</div>
       <input
         type="text"
         className="search-input"
