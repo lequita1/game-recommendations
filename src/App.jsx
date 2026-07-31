@@ -1,29 +1,48 @@
-// src/App.jsx
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import GameCards from "./components/GameCards";
 import GameDetails from "./components/GameDetails";
-import GenreFilter from "./components/GenreFilter"; 
+import GenreFilter from "./components/GenreFilter";
+import SortDropdown from "./components/SortDropdown"; 
 import "./App.css";
 
 function App() {
   const [games, setGames] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState(""); 
+  const [selectedGenre, setSelectedGenre] = useState("");
+  const [ordering, setOrdering] = useState("-added");
+  const [page, setPage] = useState(1);                 
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const API_KEY = import.meta.env.VITE_RAWG_API_KEY;
+
+  const handleGenreChange = (genre) => {
+    setSelectedGenre(genre);
+    setPage(1);
+  };
+
+  const handleOrderingChange = (newOrdering) => {
+    setOrdering(newOrdering);
+    setPage(1);
+  };
 
   useEffect(() => {
     async function fetchGames() {
       try {
-        setIsLoading(true);
+        if (page === 1) {
+          setIsLoading(true);
+        } else {
+          setIsLoadingMore(true);
+        }
 
         if (!API_KEY) {
           throw new Error("RAWG API key is missing.");
         }
-        let url = `https://api.rawg.io/api/games?key=${API_KEY}&page_size=12`;
+
+        let url = `https://api.rawg.io/api/games?key=${API_KEY}&page_size=12&page=${page}&ordering=${ordering}`;
 
         if (searchQuery.trim()) {
           url += `&search=${encodeURIComponent(searchQuery)}`;
@@ -40,12 +59,20 @@ function App() {
         }
 
         const data = await response.json();
-        setGames(data.results || []);
+
+        if (page === 1) {
+          setGames(data.results || []);
+        } else {
+          setGames((prevGames) => [...prevGames, ...(data.results || [])]);
+        }
+
+        setHasMore(Boolean(data.next));
       } catch (error) {
         console.error("Failed to fetch games", error);
-        setGames([]);
+        if (page === 1) setGames([]);
       } finally {
         setIsLoading(false);
+        setIsLoadingMore(false);
       }
     }
 
@@ -54,12 +81,17 @@ function App() {
     }, 300);
 
     return () => clearTimeout(timer);
-
-  }, [searchQuery, selectedGenre, API_KEY]);
+  }, [searchQuery, selectedGenre, ordering, page, API_KEY]);
 
   return (
     <div className="app-container">
-      <Header searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Header 
+        searchQuery={searchQuery} 
+        setSearchQuery={(query) => {
+          setSearchQuery(query);
+          setPage(1);
+        }} 
+      />
 
       <Routes>
         <Route
@@ -67,24 +99,44 @@ function App() {
           element={
             <main className="app-main">
               <h2 className="app-title">
-                {searchQuery ? `Search Results for "${searchQuery}"` : "Popular Games"}
+                {searchQuery ? `Search Results for "${searchQuery}"` : "Explore Games"}
               </h2>
 
-              <GenreFilter
-                selectedGenre={selectedGenre}
-                setSelectedGenre={setSelectedGenre}
-              />
+              <div className="controls-bar">
+                <GenreFilter
+                  selectedGenre={selectedGenre}
+                  setSelectedGenre={handleGenreChange}
+                />
+                <SortDropdown
+                  ordering={ordering}
+                  setOrdering={handleOrderingChange}
+                />
+              </div>
 
               {isLoading ? (
-                <p style={{ textAlign: "center", color: "#f5c518" }}>
+                <p style={{ textAlign: "center", color: "#f5c518", margin: "60px 0" }}>
                    Loading games...
                 </p>
               ) : (
-                <div className="game-grid">
-                  {games.map((game) => (
-                    <GameCards key={game.id} game={game} />
-                  ))}
-                </div>
+                <>
+                  <div className="game-grid">
+                    {games.map((game, index) => (
+                      <GameCards key={`${game.id}-${index}`} game={game} />
+                    ))}
+                  </div>
+
+                  {hasMore && games.length > 0 && (
+                    <div className="load-more-container">
+                      <button
+                        className="load-more-btn"
+                        onClick={() => setPage((prev) => prev + 1)}
+                        disabled={isLoadingMore}
+                      >
+                        {isLoadingMore ? " Loading..." : "Load More Games"}
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </main>
           }
